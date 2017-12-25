@@ -1,38 +1,14 @@
 <%-- 
-    Document   : managerLogin
-    Created on : 2017-12-20, 9:14:51
+    Document   : managerRegister
+    Created on : 2017-12-21, 19:33:48
     Author     : 宣佚
 --%>
-
-<%@page import="java.net.URLDecoder"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    int id;
-    if(session.getAttribute("id")!=null){
-        id= Integer.parseInt(session.getAttribute("id").toString());
-        id++;
-        session.setAttribute("id",id+"");
-    }
-    else{
-        id=1;
-        session.setAttribute("id",id+"");
-    }
-    Cookie cookies[]=request.getCookies();
-    String name="";
-    if(cookies!=null){
-        for(Cookie c:cookies){
-            System.out.println(c.getName());
-            if(c.getName().equals("name")){
-                name=URLDecoder.decode(c.getValue(), "UTF-8");
-            }
-        }
-    }
-%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>managerLogin</title>
+        <title>managerRegister</title>
         <style>
             *{
                 padding:0;
@@ -47,7 +23,7 @@
                 background:#999;
             }
 
-            #login{
+            #register{
                 width: 500px;
                 height: 280px;
                 background: url(img/login.png) no-repeat;
@@ -56,15 +32,15 @@
                 margin: 150px auto;
 /*              background-color: rgba(9,6,6,0.2);*/ 
             }
-            #login .login_head{
+            #register .register_head{
                 text-align: center;
                 font-size: 15px;
             }
-            #login .body{
+            #register .body{
                 margin:20px auto;
                 
             }
-            #login .body form .text{
+            #register .body form .text{
 /*                border:1px solid */
                 width: 280px;
                 border:0;
@@ -75,23 +51,10 @@
                 border-radius: 3px;
                 margin-top: 10px;
             }
-            #login .body form .verifiCode{
-                width: 150px;
-                border: 0;
-                outline: 0;
-                font-size:20px;
-                background: rgba(255,255,255,0.5);
-                padding: 5px 0 5px 10px;
-                border-radius: 3px;
-                margin: 5px 0 0 10px;
-            }
-            #login .body form label{
-                margin-left:50px;
-            }
-            #login .body form span{
+            #register .body form span{
                 font-size: 14px;
             }
-            #login .body form .Login{
+            #register .body form .reg{
                 width:200px;
                 height:45px;
                 border-radius: 3px;
@@ -102,15 +65,19 @@
                 font-weight: bold;
                 margin-left: 130px;
             }
-            #login .body form a{
+            #register .body form a{
                 text-decoration: none;
                 color:#FFFFFF;
                 font-size: 14px;
                 margin-left: 180px;
             }
-            #login .body form a:hover{
+            #register .body form a:hover{
                 color:#6797ef;
                 text-decoration: underline;
+            }
+            #register .body form a{
+                position: relative;
+                left:150px;
             }
             .screenbg{
                 position:fixed;
@@ -198,51 +165,33 @@
                 var width = $(window).width();
                 $(".screenbg ul img").css("width",width+"px");
         });
-        function changeImg(){
-            document.getElementById("validateCodeImg").src="${pageContext.request.contextPath}/DrawImage?"+Math.random();
-    }
-//        function login(){
-//            var login=document.getElementById("login");
-//            var register=document.getElementById("register");
-//            login.style.display="block";
-//            register.style.display="none";
-//    }
-//        function register(){
-//            var login=document.getElementById("login");
-//            var register=document.getElementById("register");
-//            login.style.display="none";
-//            register.style.display="block";
-//    }
 </script>
 
     </head>
     <body>
         <h1 style='text-align:center;color: #66ffff;'>${requestScope.error}</h1>
-        <div id="login">
-            <div class="login_head">
-                <h2 class="title">WeChat聊天系统后台登录</h2>
+        <div id="register">
+            <div class="register_head">
+                <h2 class="title">WeChat聊天系统后台注册</h2>
             </div>
             <div class="body">
-                <form action="ManagerLog" method="post">
-                    <span>管理员帐号：</span><input type="text"  name="name" maxlength="10" minlength="3" class="text" value=<%=name%>><br/>
-                    <span style="margin-left:40px;">密码：</span><input type="password"  name="password" maxlength="15" minlength="6" class="text"><br/>
-                    <span style="margin-left:15px;">验证码：</span><input type="text" class="verifiCode" name="verifiCode" size="4">
-                    <img alt="验证码看不清，换一张" src="${pageContext.request.contextPath}/DrawImage" id="validateCodeImg" onclick="changeImg()">
-                    <a href="javascript:void(0)" onclick="changeImg()" style="margin: 0">看不清，换一张</a>
-                    <label><input type="checkbox" value="on" name="remember"><span>记住帐号</span></label>
-                    <a href="managerRegister.jsp">没有管理员帐号?</a>
-                    <input type="hidden" value=<%=id%> name="id">
-                    <input type="submit" name="login" class="Login" value="登录">
+                <form action="ManagerRegister" method="post">
+                    <span>管理员帐号：</span><input type="text"  name="name" maxlength="10" minlength="3" class="text"><br/>
+                    <span style="margin-left:40px;">密码：</span><input type="password"  name="password_1" maxlength="15" minlength="6" class="text"><br/>
+                    <span style="margin-left:15px;">确认密码：</span><input type="password" class="text" name="password_2" maxlength="15" minlength="6">
+                    <a href="managerLogin.jsp">已有帐号，直接登录</a>
+                    <input type="submit" name="reg" class="reg" value="注册">
                 </form>
             </div>
         </div>
         <div class="screenbg">
 	<ul>
 		<li><a href="javascript:;"><img src="img/bg_7.jpg"></a></li>
-		<li><a href="javascript:;"><img src="img/bg_8.jpg"></a></li>
 		<li><a href="javascript:;"><img src="img/bg_9.jpg"></a></li>
+		<li><a href="javascript:;"><img src="img/bg_10.jpg"></a></li>
 	</ul>
 </div>
 
     </body>
 </html>
+

@@ -48,10 +48,10 @@ public class ManageUpdateUser extends HttpServlet {
                 request.setAttribute("error", ex.getMessage());
             }
         }
-        if(request.getParameter("update")!=null){
+        if(request.getParameter("sure").length()!=0){
             String updateName=request.getParameter("updateName");
-            String password=request.getParameter("password");
-            String sex=request.getParameter("sex");
+            String password=request.getParameter("updatePassword");
+            String sex=request.getParameter("updateSex");
             User user=new User();
             user.setUsername(updateName);
             user.setPassword(password);
